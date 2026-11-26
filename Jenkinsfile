@@ -1,4 +1,28 @@
-stages {
+pipeline {
+
+    // Run on the Windows machine where Jenkins is installed
+    agent any
+
+    // ---------------- SETTINGS (change only here) ----------------
+    environment {
+        DEPLOY_DIR = 'E:\\jenkinsproject'     // final application folder
+        APP_PORT   = '8000'                   // port the app will run on
+        PYTHON_EXE = 'python'                 // or full path e.g. E:\\Python312\\python.exe
+        DC_DEBUG   = '0'                      // 0 = production mode
+    }
+
+    options {
+        timestamps()                          // time stamp in every log line
+        disableConcurrentBuilds()             // never run 2 deployments together
+    }
+
+    // Auto deploy when you push to GitHub (needs GitHub webhook),
+    // or poll GitHub every 5 minutes if no webhook is set.
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
+    stages {
 
         // ---------- STEP 1 : Get code from GitHub ----------
         stage('1. Checkout from Git') {
