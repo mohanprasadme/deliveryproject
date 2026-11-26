@@ -1,0 +1,87 @@
+{% extends "challan/base.html" %}
+{% load static %}
+{% block title %}{% if challan %}DC {{ challan.dc_no }}{% else %}New Delivery Challan{% endif %}{% endblock %}
+{% block content %}
+{% if challan %}
+<form id="deleteForm" method="post" action="{% url 'dc_delete' challan.pk %}"
+      onsubmit="return confirm('Delete DC {{ challan.dc_no }} permanently? This cannot be undone.');">{% csrf_token %}</form>
+{% endif %}
+
+<form method="post" id="dcForm" autocomplete="off">
+{% csrf_token %}
+{{ formset.management_form }}
+
+<div class="actionbar">
+  <h2>{% if challan %}Delivery Challan {{ challan.dc_no }}{% else %}New Delivery Challan{% endif %}</h2>
+  <div class="actions">
+    <button type="submit" class="btn primary" name="save">Save</button>
+    <button type="submit" class="btn" name="save_print">Save &amp; Print</button>
+    {% if challan %}
+      <a class="btn" href="{% url 'dc_print' challan.pk %}" target="_blank">Print</a>
+      <button type="submit" class="btn danger" form="deleteForm">Delete</button>
+    {% else %}
+      <a class="btn ghost" href="{% url 'dc_new' %}">Clear</a>
+    {% endif %}
+    <a class="btn ghost" href="{% url 'dc_list' %}">DC Records</a>
+  </div>
+</div>
+
+<div class="paper challan-paper type-non-returnable" id="challanPaper">
+  {% if form.errors or formset.total_error_count %}<div class="alert error">Some fields need attention. Check the messages in red below.</div>{% endif %}
+
+  <div class="paper-head">
+    <div class="paper-title">
+      <h1>DELIVERY CHALLAN CUM GATE PASS</h1>
+      <div class="type-choice">
+        {% for radio in form.challan_type %}<label class="radio">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>{% endfor %}
+      </div>
+    </div>
+    <div class="logo">apex</div>
+  </div>
+
+  <div class="grid2">
+    <fieldset class="block">
+      <legend>From</legend>
+      <label>Department {{ form.from_dept }}</label>
+      <label>Company {{ form.from_company }}{{ form.from_company.errors }}</label>
+      <label>Address {{ form.from_address }}</label>
+    </fieldset>
+    <fieldset class="block meta">
+      <legend>Challan details</legend>
+      <label>DC No {{ form.dc_no }}{{ form.dc_no.errors }}</label>
+      <label>DC Date {{ form.dc_date }}{{ form.dc_date.errors }}</label>
+    </fieldset>
+  </div>
+
+  <fieldset class="block">
+    <legend>To</legend>
+    <div class="grid2">
+      <label>Name {{ form.to_name }}{{ form.to_name.errors }}</label>
+      <label>Department {{ form.to_dept }}</label>
+      <label>Company {{ form.to_company }}</label>
+      <label>Address {{ form.to_address }}</label>
+    </div>
+  </fieldset>
+
+  <p class="receive-note">Please receive the following goods in good condition</p>
+  <div class="table-wrap">
+    <table class="items-table">
+      <thead><tr><th class="c-sno">S.No</th><th>Particulars</th><th class="c-qty">Qty</th><th class="c-uom">UOM</th><th class="c-rem">Remarks</th><th class="c-tools"></th></tr></thead>
+      <tbody id="itemRows">
+        {% for f in formset %}{% include "challan/_item_row.html" with f=f %}{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ formset.non_form_errors }}
+  <button type="button" class="btn ghost" id="addRow">+ Add item</button>
+
+  <div class="paper-foot">
+    <span>Please send the duplicate copy duly signed</span>
+    <span>For Apex Laboratories Private Limited</span>
+  </div>
+</div>
+</form>
+
+<template id="rowTemplate">{% include "challan/_item_row.html" with f=empty_form %}</template>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/dc_form.js' %}"></script>{% endblock %}

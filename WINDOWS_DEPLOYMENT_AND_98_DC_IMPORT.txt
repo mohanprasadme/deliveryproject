@@ -1,0 +1,54 @@
+APEX DELIVERY CHALLAN - WINDOWS DEPLOYMENT AND 98-CHALLAN IMPORT
+
+A. FIRST-TIME WINDOWS SETUP
+1. Install Python 3.12 (64-bit) from https://www.python.org/downloads/windows/.
+   During setup, enable “Add python.exe to PATH”.
+2. Extract this ZIP to C:\DCApp. The folder must contain manage.py, setup.bat,
+   run_server.bat, requirements.txt, dcproject\ and challan\ directly.
+3. Open C:\DCApp in File Explorer and double-click setup.bat.
+4. Wait for package installation, database migrations and static-file collection.
+5. When prompted, create the administrator username and password.
+6. Double-click run_server.bat.
+7. Open http://127.0.0.1:8000 in Edge or Chrome and sign in.
+   Keep the run_server.bat window open while using the application.
+
+B. IMPORT THE SUPPLIED DC_2025.DOCX (98 CHALLANS)
+1. Sign in using the administrator account.
+2. Open the “Import from Word” page from the application menu.
+3. Select sample_import\DC_2025.docx from the extracted application folder.
+4. Tick “Preview only” and click Import.
+5. Review the preview. The supplied document should produce 98 individual
+   challan results, DC No 001 through DC No 098. Every section has its own date,
+   From/To information and goods table. The parser detects the document's
+   Returnable / Non-Returnable selection from its Word header formatting.
+6. Before saving, create a database backup from the application's Backup page.
+7. Select DC_2025.docx again, UNTICK “Preview only”, and click Import.
+8. Confirm the result shows 98 imported (if the database was empty). If any
+   DC number already exists, that section is skipped rather than overwritten.
+9. Open DC Records and check a few challans, including DC 001, DC 050 and DC 098.
+
+C. RUN THE SERVER AGAIN LATER
+1. Double-click run_server.bat.
+2. Browse to http://127.0.0.1:8000.
+
+D. IMPORTANT DATA FILES
+- db.sqlite3: all challan records, items and application user records.
+- secret.key: Django secret key. Keep this file safe and do not delete it.
+- backups\: database backup files.
+Keep these files when updating the application. Back them up regularly.
+
+E. OPTIONAL LAN ACCESS
+The server is configured to listen on all network interfaces at port 8000.
+Allow TCP port 8000 through Windows Defender Firewall on the application PC,
+then browse from another office PC using http://<APPLICATION-PC-IP>:8000.
+Use this only on a trusted office LAN; do not expose the development server
+or this application directly to the public internet.
+
+For full details, see DEPLOYMENT_GUIDE.md.
+
+
+UPDATE: YEAR-WISE RECORD MANAGEMENT
+- DC numbers are unique within a calendar year, not across all years. For example, DC 001 dated in 2025 and DC 001 dated in 2026 are both allowed.
+- During Word import, duplicate detection checks the combination of DC No + year. The same DC number in a different year will be imported as a separate record.
+- DC Records includes a year filter. Staff users can use Bulk delete by year to permanently delete all challans and their related item rows for a selected year. Take a database backup before bulk deletion.
+- When updating an existing installation, keep your db.sqlite3 and secret.key. Run update.bat (or activate venv and run `python manage.py migrate`) to apply the database migration.

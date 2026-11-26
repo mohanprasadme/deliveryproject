@@ -1,0 +1,677 @@
+:root {
+  --ink: #1d232b;
+  --muted: #667085;
+  --line: #d5dae1;
+  --bg: #eef0f3;
+  --paper: #ffffff;
+  --accent: #0f766e;
+  --accent-dark: #0b5a54;
+  --danger: #b42318;
+  --logo: #7b8189;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 "Segoe UI", Calibri, Arial, sans-serif; }
+a { color: var(--accent-dark); }
+h1, h2, h3 { margin: 0 0 .4em; }
+h2 { font-size: 1.35rem; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+code { background: #e6e9ee; padding: 1px 5px; border-radius: 3px; word-break: break-all; }
+
+.logo { font-weight: 700; letter-spacing: 2px; color: var(--logo); font-size: 1.7rem; line-height: 1; }
+.logo.big { font-size: 2.6rem; margin-bottom: 8px; }
+
+.topbar { display: flex; align-items: center; gap: 28px; background: #232a33; color: #fff; padding: 0 22px; min-height: 54px; flex-wrap: wrap; }
+.topbar a { color: #dfe4ea; text-decoration: none; }
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand .logo { color: #c3c9d1; font-size: 1.5rem; }
+.brand-sub { color: #aab1bb; font-size: .9rem; }
+.topbar nav { display: flex; gap: 4px; flex: 1; }
+.topbar nav a { padding: 16px 14px; border-bottom: 3px solid transparent; }
+.topbar nav a:hover { color: #fff; }
+.topbar nav a.active { color: #fff; border-bottom-color: #2dd4bf; }
+.usermenu { display: flex; align-items: center; gap: 14px; font-size: .9rem; color: #aab1bb; }
+.usermenu form { margin: 0; }
+.link-btn { background: none; border: 0; color: #dfe4ea; font: inherit; cursor: pointer; padding: 0; text-decoration: underline; }
+
+.container { max-width: 1040px; margin: 0 auto; padding: 24px 20px 60px; }
+
+.alert { padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; border: 1px solid; }
+.alert.success { background: #e7f6ee; border-color: #a6dbbf; color: #14532d; }
+.alert.error { background: #fdecea; border-color: #f3b5ae; color: #7a1c14; }
+.alert.warning, .alert.info { background: #fff6e0; border-color: #ecd28a; color: #5c4400; }
+
+.btn { display: inline-block; font: inherit; font-size: .92rem; padding: 7px 15px; border: 1px solid var(--line); border-radius: 5px; background: #fff; color: var(--ink); cursor: pointer; text-decoration: none; }
+.btn:hover { border-color: #aeb6c1; background: #f7f8fa; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-dark); }
+.btn.danger { color: var(--danger); border-color: #e5b4af; }
+.btn.danger:hover { background: #fdecea; }
+.btn.ghost { background: transparent; }
+.btn.small { padding: 3px 10px; font-size: .82rem; }
+.btn.wide { width: 100%; padding: 10px; margin-top: 8px; }
+:focus-visible { outline: 2px solid #2dd4bf; outline-offset: 2px; }
+
+.actionbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.actionbar h2 { margin: 0; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+input[type=text], input[type=search], input[type=date], input[type=number], input[type=password], select, textarea, input[type=file] {
+  width: 100%; font: inherit; padding: 7px 9px; border: 1px solid #c3cad3; border-radius: 4px; background: #fff; color: var(--ink);
+}
+textarea { resize: vertical; }
+label { display: block; font-size: .82rem; color: var(--muted); margin-bottom: 10px; }
+label input, label textarea, label select { margin-top: 3px; color: var(--ink); font-size: 15px; }
+.errorlist { list-style: none; margin: 3px 0 0; padding: 0; color: var(--danger); font-size: .82rem; }
+
+/* the form looks like the paper challan */
+.paper { background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 26px 30px 24px; box-shadow: 0 1px 2px rgba(20,30,40,.06); }
+.paper-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.paper-title { flex: 1; text-align: center; }
+.paper-title h1 { font-family: "Times New Roman", Georgia, serif; font-size: 1.2rem; letter-spacing: .5px; text-decoration: underline; color: #555; margin: 4px 0 8px; }
+.type-choice { display: flex; justify-content: center; gap: 26px; }
+.radio { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: .95rem; color: var(--ink); cursor: pointer; }
+.radio input { width: auto; margin: 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+.block { border: 1px solid var(--line); border-radius: 4px; margin: 0 0 16px; padding: 12px 16px 4px; }
+.block legend { font-weight: 700; padding: 0 6px; }
+.block .grid2 { gap: 0 22px; }
+.receive-note { font-size: .82rem; text-transform: uppercase; margin: 22px 0 6px; }
+.table-wrap { overflow-x: auto; }
+.items-table { width: 100%; border-collapse: collapse; }
+.items-table th, .items-table td { border: 1px solid #333; padding: 4px; vertical-align: middle; }
+.items-table th { font-size: .8rem; background: #f3f4f6; padding: 6px; }
+.items-table td.sno { text-align: center; width: 54px; }
+.items-table input, .items-table textarea { border-color: transparent; background: transparent; }
+.items-table input:focus, .items-table textarea:focus { border-color: var(--accent); background: #fff; }
+.c-qty { width: 80px; } .c-uom { width: 90px; } .c-rem { width: 22%; } .c-tools { width: 40px; }
+.row-tools { text-align: center; }
+.icon-btn { border: 0; background: none; font-size: 1.4rem; line-height: 1; color: var(--muted); cursor: pointer; }
+.icon-btn:hover { color: var(--danger); }
+#addRow { margin-top: 10px; }
+.paper-foot { display: flex; justify-content: space-between; margin-top: 46px; font-size: .9rem; font-weight: 600; }
+
+/* lists */
+.filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.filters input[type=search] { width: 260px; }
+.filters select { width: 160px; }
+.filters label { margin: 0; display: flex; align-items: center; gap: 6px; }
+.filters label input { width: auto; margin: 0; }
+.list-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); }
+.list-table th, .list-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.list-table th { background: #f3f4f6; font-size: .85rem; }
+.c-actions { white-space: nowrap; }
+form.inline { display: inline; margin: 0; }
+.pager { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 16px; }
+.empty { background: #fff; border: 1px dashed #b9c0ca; padding: 30px; text-align: center; border-radius: 6px; }
+
+/* home */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 18px 0; }
+.tile { display: block; background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 4px; padding: 18px 20px; text-decoration: none; color: var(--ink); }
+.tile:hover { border-color: var(--accent); }
+.tile strong { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+.tile span { color: var(--muted); }
+.stats { color: var(--muted); }
+
+/* login & cards */
+.login-card { max-width: 380px; margin: 9vh auto 0; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 30px 32px; text-align: center; }
+.login-card form { text-align: left; margin-top: 18px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; margin-bottom: 18px; }
+.card h3 { margin-top: 0; }
+.check { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: .9rem; }
+.check input { width: auto; margin: 0; }
+
+@media (max-width: 720px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .paper { padding: 16px; }
+  .paper-head { flex-direction: column-reverse; align-items: flex-end; gap: 10px; }
+  .paper-title { width: 100%; }
+}
+
+
+/* =========================================================
+   DELIVERY CHALLAN TYPE COLOUR THEMES
+   Returnable = green | Non Returnable = red
+   Apex wordmark = red by default in both themes
+========================================================= */
+
+.paper .logo {
+  color: #c62828 !important;
+  font-weight: 800;
+}
+
+.paper .paper-title h1 {
+  transition: color .2s ease;
+}
+
+.paper.type-returnable {
+  border-top: 5px solid #15945b;
+  --accent: #087443;
+  --accent-dark: #065f37;
+}
+
+.paper.type-returnable .paper-title h1 {
+  color: #087443;
+}
+
+.paper.type-returnable .type-choice .radio:has(input:checked) {
+  color: #087443;
+  font-weight: 800;
+}
+
+.paper.type-returnable .type-choice input:checked {
+  accent-color: #15945b;
+}
+
+.paper.type-returnable .receive-note {
+  color: #087443;
+}
+
+.paper.type-returnable .items-table th {
+  background: #e7f7ee;
+  color: #075c36;
+}
+
+.paper.type-non-returnable {
+  border-top: 5px solid #c62828;
+  --accent: #c62828;
+  --accent-dark: #9f1f1a;
+}
+
+.paper.type-non-returnable .paper-title h1 {
+  color: #b42318;
+}
+
+.paper.type-non-returnable .type-choice .radio:has(input:checked) {
+  color: #b42318;
+  font-weight: 800;
+}
+
+.paper.type-non-returnable .type-choice input:checked {
+  accent-color: #c62828;
+}
+
+.paper.type-non-returnable .receive-note {
+  color: #b42318;
+}
+
+.paper.type-non-returnable .items-table th {
+  background: #fff0ee;
+  color: #8f1d16;
+}
+
+/* Apex wordmark stays red regardless of challan type. */
+.paper .logo,
+.sheet .logo {
+  color: #c62828 !important;
+}
+
+@media (max-width: 720px) {
+  .paper.type-returnable,
+  .paper.type-non-returnable {
+    border-top-width: 5px;
+  }
+}
+
+
+
+/* =========================================================
+   APEX COLOURFUL DASHBOARD
+   Scoped to .apex-dashboard only. Other pages are untouched.
+========================================================= */
+
+.apex-dashboard {
+  --dash-ink: #17243b;
+  --dash-muted: #718096;
+  color: var(--dash-ink);
+  padding: 8px 0 24px;
+}
+
+.apex-dashboard * { box-sizing: border-box; }
+
+.apex-dashboard .dash-welcome {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 205px;
+  padding: 34px 38px;
+  margin-bottom: 32px;
+  border-radius: 22px;
+  color: #fff;
+  background: linear-gradient(112deg, #102b56 0%, #174b83 48%, #2866a8 100%);
+  box-shadow: 0 15px 35px rgba(24, 67, 119, .18);
+}
+
+.apex-dashboard .dash-welcome-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+}
+
+.apex-dashboard .dash-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 15px;
+  color: #b9ddff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.apex-dashboard .dash-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5af0b0;
+  box-shadow: 0 0 0 5px rgba(90,240,176,.13), 0 0 14px #5af0b0;
+}
+
+.apex-dashboard .dash-welcome h1 {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: clamp(25px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.8px;
+}
+
+.apex-dashboard .dash-welcome h1 span { color: #75d7ff; }
+
+.apex-dashboard .dash-welcome p {
+  max-width: 570px;
+  margin: 0;
+  color: #d1e4f8;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.apex-dashboard .dash-primary-action {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 245px;
+  padding: 15px 17px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 14px;
+  color: #14375f;
+  text-decoration: none;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,.13);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.apex-dashboard .dash-primary-action:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(0,0,0,.2);
+}
+
+.apex-dashboard .dash-action-plus {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  color: #fff;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  font-size: 25px;
+}
+
+.apex-dashboard .dash-primary-action b,
+.apex-dashboard .dash-primary-action small { display: block; }
+
+.apex-dashboard .dash-primary-action b {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.apex-dashboard .dash-primary-action small {
+  margin-top: 4px;
+  color: #7889a1;
+  font-size: 10px;
+}
+
+.apex-dashboard .dash-action-arrow {
+  margin-left: auto;
+  color: #2563eb;
+  font-size: 20px;
+}
+
+.apex-dashboard .dash-orb {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(174,220,255,.17);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.apex-dashboard .dash-orb-one {
+  width: 330px;
+  height: 330px;
+  right: 18%;
+  top: -210px;
+  box-shadow: 0 0 0 35px rgba(255,255,255,.025), 0 0 0 75px rgba(255,255,255,.02);
+}
+
+.apex-dashboard .dash-orb-two {
+  width: 210px;
+  height: 210px;
+  right: 3%;
+  bottom: -165px;
+  border-color: rgba(255,255,255,.22);
+}
+
+.apex-dashboard .dash-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 0 2px 17px;
+}
+
+.apex-dashboard .dash-section-kicker {
+  color: #3982c9;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+}
+
+.apex-dashboard .dash-section-heading h2 {
+  margin: 5px 0 0;
+  color: #1b2b45;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.apex-dashboard .dash-secure-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border: 1px solid #d9f3e5;
+  border-radius: 30px;
+  color: #17804e;
+  background: #f0fbf5;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.apex-dashboard .dash-secure-label span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #20b875;
+}
+
+.apex-dashboard .dash-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 34px;
+}
+
+.apex-dashboard .dash-stat-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 150px;
+  padding: 20px 22px;
+  border: 1px solid transparent;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(32, 55, 88, .055);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.apex-dashboard .dash-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 13px 28px rgba(32, 55, 88, .10);
+}
+
+.apex-dashboard .stat-blue {
+  border-color: #d8eaff;
+  background: linear-gradient(135deg, #f5faff, #eaf4ff);
+}
+.apex-dashboard .stat-purple {
+  border-color: #e8ddff;
+  background: linear-gradient(135deg, #fbf8ff, #f1eaff);
+}
+.apex-dashboard .stat-green {
+  border-color: #d6f2e4;
+  background: linear-gradient(135deg, #f5fff9, #e8f9f0);
+}
+
+.apex-dashboard .dash-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.apex-dashboard .dash-stat-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.apex-dashboard .stat-blue .dash-stat-icon { color: #2375cf; background: #d9ebff; }
+.apex-dashboard .stat-purple .dash-stat-icon { color: #8051d6; background: #e9ddff; }
+.apex-dashboard .stat-green .dash-stat-icon { color: #168454; background: #d7f4e4; }
+
+.apex-dashboard .dash-stat-caption {
+  color: #8998ac;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+}
+
+.apex-dashboard .dash-stat-number {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  color: #1a3558;
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -.7px;
+}
+
+.apex-dashboard .dash-latest-number { font-size: 25px; }
+
+.apex-dashboard .dash-stat-label {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  color: #74849b;
+  font-size: 11px;
+}
+
+.apex-dashboard .dash-stat-decoration {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  right: -28px;
+  bottom: -48px;
+  border: 14px solid rgba(63, 145, 224, .07);
+  border-radius: 50%;
+}
+
+.apex-dashboard .stat-purple .dash-stat-decoration { border-color: rgba(128,81,214,.08); }
+.apex-dashboard .stat-green .dash-stat-decoration { border-color: rgba(22,132,84,.08); }
+
+.apex-dashboard .dash-actions-heading { margin-bottom: 17px; }
+
+.apex-dashboard .dash-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.apex-dashboard .dash-feature-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  gap: 17px;
+  min-height: 158px;
+  padding: 22px;
+  border: 1px solid transparent;
+  border-radius: 17px;
+  color: inherit;
+  text-decoration: none;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.apex-dashboard .dash-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(30, 50, 80, .10);
+}
+
+.apex-dashboard .feature-cyan { background: linear-gradient(120deg, #effaff, #e3f6ff); border-color: #cceeff; }
+.apex-dashboard .feature-violet { background: linear-gradient(120deg, #f7f2ff, #eee8ff); border-color: #e2d6ff; }
+.apex-dashboard .feature-orange { background: linear-gradient(120deg, #fff8ef, #fff0dd); border-color: #ffe2bd; }
+.apex-dashboard .feature-green { background: linear-gradient(120deg, #effcf5, #e1f8eb); border-color: #ccefdc; }
+
+.apex-dashboard .dash-feature-icon {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 45px;
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: white;
+  font-size: 23px;
+  font-weight: 700;
+  box-shadow: 0 7px 15px rgba(30,60,100,.13);
+}
+
+.apex-dashboard .feature-cyan .dash-feature-icon { background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+.apex-dashboard .feature-violet .dash-feature-icon { background: linear-gradient(135deg, #8b5cf6, #6d45ca); }
+.apex-dashboard .feature-orange .dash-feature-icon { background: linear-gradient(135deg, #fb923c, #ea580c); }
+.apex-dashboard .feature-green .dash-feature-icon { background: linear-gradient(135deg, #22c55e, #0f9460); }
+
+.apex-dashboard .dash-feature-content {
+  position: relative;
+  z-index: 1;
+  max-width: 390px;
+}
+
+.apex-dashboard .dash-feature-content h3 {
+  margin: 1px 0 7px;
+  color: #1d3555;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.apex-dashboard .dash-feature-content p {
+  margin: 0;
+  color: #718198;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.apex-dashboard .dash-feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 13px;
+  color: #256bb3;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.apex-dashboard .feature-violet .dash-feature-link { color: #7448c7; }
+.apex-dashboard .feature-orange .dash-feature-link { color: #c56a1e; }
+.apex-dashboard .feature-green .dash-feature-link { color: #168454; }
+
+.apex-dashboard .dash-feature-link b {
+  font-size: 16px;
+  transition: transform .2s ease;
+}
+
+.apex-dashboard .dash-feature-card:hover .dash-feature-link b { transform: translateX(5px); }
+
+.apex-dashboard .dash-feature-watermark {
+  position: absolute;
+  right: 14px;
+  bottom: -20px;
+  color: rgba(45, 92, 145, .055);
+  font-size: 90px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.apex-dashboard .dash-latest-strip {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 20px;
+  padding: 14px 17px;
+  border: 1px solid #e1eaf4;
+  border-radius: 13px;
+  color: #243b59;
+  text-decoration: none;
+  background: #fff;
+  transition: border-color .2s ease, transform .2s ease;
+}
+
+.apex-dashboard .dash-latest-strip:hover {
+  border-color: #8dc5f2;
+  transform: translateY(-2px);
+}
+
+.apex-dashboard .dash-latest-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: #2475c5;
+  background: #eaf4ff;
+  font-size: 18px;
+}
+
+.apex-dashboard .dash-latest-text { display: flex; flex-direction: column; gap: 4px; }
+.apex-dashboard .dash-latest-text small { color: #8493a7; font-size: 8px; font-weight: 900; letter-spacing: 1px; }
+.apex-dashboard .dash-latest-text b { font-size: 11px; }
+.apex-dashboard .dash-latest-open { margin-left: auto; color: #2874b8; font-size: 10px; font-weight: 800; }
+
+.apex-dashboard .dash-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 15px 2px 0;
+  border-top: 1px solid #e7edf4;
+  color: #9aa8b9;
+  font-size: 8px;
+  letter-spacing: 1.1px;
+}
+
+.apex-dashboard .dash-footer b { color: #c62828; font-size: 10px; }
+
+@media (max-width: 850px) {
+  .apex-dashboard .dash-welcome { align-items: flex-start; flex-direction: column; }
+  .apex-dashboard .dash-primary-action { width: 100%; max-width: 340px; }
+  .apex-dashboard .dash-stats-grid { grid-template-columns: 1fr 1fr; }
+  .apex-dashboard .dash-stat-card:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 600px) {
+  .apex-dashboard .dash-welcome { padding: 25px 22px; border-radius: 17px; }
+  .apex-dashboard .dash-stats-grid,
+  .apex-dashboard .dash-action-grid { grid-template-columns: 1fr; }
+  .apex-dashboard .dash-stat-card:last-child { grid-column: auto; }
+  .apex-dashboard .dash-section-heading h2 { font-size: 18px; }
+  .apex-dashboard .dash-footer { flex-direction: column; }
+  .apex-dashboard .dash-latest-open { font-size: 9px; }
+}

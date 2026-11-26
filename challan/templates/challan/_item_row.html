@@ -1,0 +1,8 @@
+<tr class="item-row">
+  <td class="sno"></td>
+  <td>{% for h in f.hidden_fields %}{{ h }}{% endfor %}{{ f.particulars }}{{ f.particulars.errors }}</td>
+  <td>{{ f.qty }}{{ f.qty.errors }}</td>
+  <td>{{ f.uom }}</td>
+  <td>{{ f.remarks }}</td>
+  <td class="row-tools"><span hidden>{{ f.DELETE }}</span><button type="button" class="icon-btn remove-row" title="Remove this item">&times;</button></td>
+</tr>

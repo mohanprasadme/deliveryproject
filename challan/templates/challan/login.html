@@ -1,0 +1,17 @@
+{% extends "challan/base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="login-card">
+  <div class="logo big">apex</div>
+  <h1>Delivery Challan</h1>
+  <p class="muted">Log in to create and print delivery challans.</p>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert error">Wrong username or password.</div>{% endif %}
+    <label>Username {{ form.username }}</label>
+    <label>Password {{ form.password }}</label>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn primary wide" type="submit">Log in</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Delivery Challan{% endblock %} - Apex Laboratories</title>
+<link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<header class="topbar">
+  <a class="brand" href="{% url 'home' %}"><span class="logo">apex</span><span class="brand-sub">Delivery Challan</span></a>
+  {% with name=request.resolver_match.url_name %}
+  <nav>
+    <a href="{% url 'dc_new' %}" class="{% if name == 'dc_new' or name == 'dc_edit' %}active{% endif %}">Delivery Challan</a>
+    <a href="{% url 'dc_list' %}" class="{% if name == 'dc_list' %}active{% endif %}">DC Records</a>
+    {% if user.is_staff %}
+    <a href="{% url 'import_word' %}" class="{% if name == 'import_word' %}active{% endif %}">Import from Word</a>
+    <a href="{% url 'backup' %}" class="{% if name == 'backup' %}active{% endif %}">Backup &amp; Restore</a>
+    <a href="{% url 'admin:auth_user_changelist' %}">Users</a>
+    {% endif %}
+  </nav>
+  {% endwith %}
+  <div class="usermenu">
+    <span>{{ user.get_username }}</span>
+    <a href="{% url 'password_change' %}">Change password</a>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-btn">Log out</button></form>
+  </div>
+</header>
+{% endif %}
+<main class="container">
+  {% for m in messages %}<div class="alert {{ m.tags }}">{{ m }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+{% block scripts %}{% endblock %}
+</body>
+</html>

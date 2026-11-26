@@ -1,0 +1,54 @@
+{% extends "challan/base.html" %}
+{% block title %}Backup &amp; Restore{% endblock %}
+{% block content %}
+<h2>Backup &amp; Restore</h2>
+<div class="grid2">
+  <section class="card">
+    <h3>Back up</h3>
+    <p class="muted">A backup is a single copy of the whole database (all challans and users).</p>
+    <p><a class="btn primary" href="{% url 'backup_download' %}">Download backup to this PC</a></p>
+    <form method="post" action="{% url 'backup_create' %}">{% csrf_token %}
+      <button class="btn" type="submit">Save a backup on the server</button>
+    </form>
+    <p class="muted small">Server backups are stored in<br><code>{{ backup_dir }}</code></p>
+  </section>
+
+  <section class="card">
+    <h3>Restore</h3>
+    <p class="muted">Replaces all current data with the backup. A safety copy of today's data is saved first.</p>
+    <form method="post" action="{% url 'backup_restore' %}" enctype="multipart/form-data"
+          onsubmit="return confirm('Replace ALL current data with this backup?');">{% csrf_token %}
+      <label>Backup file (.sqlite3) <input type="file" name="backup_file" accept=".sqlite3,.db"></label>
+      <label class="check"><input type="checkbox" name="confirm" value="yes"> I understand current data will be replaced</label>
+      <button class="btn danger" type="submit">Restore from file</button>
+    </form>
+  </section>
+</div>
+
+<h3>Backups stored on the server</h3>
+{% if backups %}
+<div class="table-wrap">
+<table class="list-table">
+  <thead><tr><th>File</th><th>Created</th><th>Size</th><th class="c-actions">Actions</th></tr></thead>
+  <tbody>
+  {% for b in backups %}
+    <tr>
+      <td>{{ b.name }}</td><td>{{ b.modified|date:"d.m.Y H:i" }}</td><td>{{ b.size_kb }} KB</td>
+      <td class="c-actions">
+        <a class="btn small" href="{% url 'backup_download_file' b.name %}">Download</a>
+        <form method="post" action="{% url 'backup_restore' %}" class="inline"
+              onsubmit="return confirm('Restore {{ b.name }}? Current data will be replaced.');">{% csrf_token %}
+          <input type="hidden" name="server_file" value="{{ b.name }}">
+          <input type="hidden" name="confirm" value="yes">
+          <button class="btn small danger" type="submit">Restore</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty">No backups on the server yet.</div>
+{% endif %}
+{% endblock %}

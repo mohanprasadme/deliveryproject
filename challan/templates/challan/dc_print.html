@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DC {{ challan.dc_no }}</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde3; color: #000; font-family: Calibri, "Segoe UI", Arial, sans-serif; font-size: 12pt; }
+  .toolbar { position: sticky; top: 0; background: #1f2937; padding: 10px 16px; display: flex; gap: 10px; }
+  .toolbar button, .toolbar a { font: inherit; font-size: 14px; background: #fff; color: #111; border: 0; border-radius: 4px; padding: 7px 16px; cursor: pointer; text-decoration: none; }
+  .toolbar .go { background: #0f766e; color: #fff; }
+  .sheet { width: 210mm; min-height: 297mm; margin: 14px auto; background: #fff; padding: 14mm; display: flex; flex-direction: column; }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .titlebox { flex: 1; text-align: center; padding-top: 4px; padding-left: 40px; }
+  .title { font-family: "Times New Roman", serif; font-weight: bold; font-size: 14pt; letter-spacing: .5px; text-decoration: underline; color: #555; }
+  .type { margin-top: 4px; font-size: 12pt; color: #777; }
+  .type b { color: #444; }
+  .logo { font-family: "Segoe UI", Arial, sans-serif; font-weight: 700; font-size: 26pt; letter-spacing: 2px; color: #777; line-height: 1; }
+  .from-row { display: flex; justify-content: space-between; margin-top: 30px; }
+  .lbl { font-weight: bold; }
+  .meta { font-weight: bold; font-size: 11pt; padding-right: 24px; line-height: 1.6; }
+  .addr { line-height: 1.4; margin-top: 14px; }
+  .to { margin-top: 56px; }
+  .note { margin-top: 90px; font-size: 9pt; text-transform: uppercase; }
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  th, td { border: 1px solid #000; padding: 4px 6px; vertical-align: middle; }
+  th { text-align: center; font-weight: bold; }
+  td.c { text-align: center; }
+  td.p { white-space: pre-line; }
+  .foot { margin-top: auto; padding-top: 60px; display: flex; justify-content: space-between; font-size: 10pt; font-weight: 600; }
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet { margin: 0; padding: 0; width: auto; min-height: 272mm; }
+  }
+
+  /* Printed challan type highlight. Apex wordmark remains red. */
+  .logo { color: #c62828 !important; }
+
+  .type {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 6px 15px;
+    border-radius: 5px;
+    font-size: 12pt;
+    font-weight: 900 !important;
+    letter-spacing: .45px;
+    line-height: 1.2;
+    text-align: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .type-returnable .type {
+    color: #075f37 !important;
+    background: #dff5e8 !important;
+    border: 2px solid #16834c !important;
+  }
+  .type-non-returnable .type {
+    color: #a51f19 !important;
+    background: #fde7e5 !important;
+    border: 2px solid #c62828 !important;
+  }
+
+  /* Remove the horizontal line at the top of the printed sheet. */
+  .sheet,
+  .type-returnable .sheet,
+  .type-non-returnable .sheet {
+    border-top: none !important;
+  }
+
+  @media print {
+    .type {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .sheet {
+      border-top: none !important;
+    }
+  }
+
+</style>
+</head>
+<body class="{% if challan.challan_type == 'R' %}type-returnable{% else %}type-non-returnable{% endif %}">
+<div class="toolbar">
+  <button class="go" onclick="window.print()">Print</button>
+  <a href="{% url 'dc_edit' challan.pk %}">Back to challan</a>
+  <a href="{% url 'dc_list' %}">DC Records</a>
+</div>
+
+<div class="sheet">
+  <div class="head">
+    <div class="titlebox">
+      <div class="title">DELIVERY CHALLAN CUM GATE PASS</div>
+      <div class="type">
+        {% if challan.challan_type == 'R' %}RETURNABLE{% else %}NON RETURNABLE{% endif %}
+      </div>
+    </div>
+    <div class="logo">apex</div>
+  </div>
+
+  <div class="from-row">
+    <div>
+      <div class="lbl">From</div>
+      <div class="addr">
+        {% if challan.from_dept %}{{ challan.from_dept }}<br>{% endif %}
+        <b>{{ challan.from_company }}</b><br>
+        {{ challan.from_address|linebreaksbr }}
+      </div>
+    </div>
+    <div class="meta">DC No&nbsp;&nbsp;: {{ challan.dc_no }}<br>DC Date: {{ challan.dc_date|date:"d.m.Y" }}</div>
+  </div>
+
+  <div class="to">
+    <div class="lbl">To</div>
+    <div class="addr">
+      <b>{{ challan.to_name }}</b><br>
+      {% if challan.to_dept %}{{ challan.to_dept }}<br>{% endif %}
+      {% if challan.to_company %}{{ challan.to_company }}<br>{% endif %}
+      {{ challan.to_address|linebreaksbr }}
+    </div>
+  </div>
+
+  <div class="note">Please receive the following goods in good condition</div>
+  <table>
+    <thead><tr><th style="width:9%">S.NO</th><th>PARTICULARS</th><th style="width:9%">QTY</th><th style="width:10%">UOM</th><th style="width:25%">REMARKS</th></tr></thead>
+    <tbody>
+    {% for it in items %}
+      <tr><td class="c">{{ forloop.counter }}</td><td class="p">{{ it.particulars }}</td><td class="c">{{ it.qty|stringformat:"02d" }}</td><td class="c">{{ it.uom }}</td><td class="c">{{ it.remarks }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="foot">
+    <span>Please send the duplicate copy duly signed</span>
+    <span>For Apex Laboratories Private Limited</span>
+  </div>
+</div>
+{% if auto %}<script>window.addEventListener('load', function () { setTimeout(function () { window.print(); }, 300); });</script>{% endif %}
+</body>
+</html>

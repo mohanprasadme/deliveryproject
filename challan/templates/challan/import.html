@@ -1,0 +1,33 @@
+{% extends "challan/base.html" %}
+{% block title %}Import from Word{% endblock %}
+{% block content %}
+<h2>Import old challans from Word</h2>
+<section class="card">
+  <p class="muted">Select one or more old Delivery Challan Word files (<b>.docx</b>). A file may contain a single challan or many separate challans. For example, <b>DC_2025.docx</b> contains 98 challans and will be split into 98 individual database records, including each challan’s own header and goods table.
+  Duplicate checking uses both DC No and calendar year. The same DC No in a different year is imported as a separate record; only the same DC No in the same year is skipped.</p>
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <label>Word files <input type="file" name="files" accept=".docx,.doc" multiple></label>
+    <label class="check"><input type="checkbox" name="dry_run" value="1" {% if dry %}checked{% endif %}> Preview only - check the files without saving</label>
+    <button class="btn primary" type="submit">Import</button>
+  </form>
+  <p class="muted small">Tip: Upload DC_2025.docx once. Run Preview only first, review the 98 results, then upload again without Preview to save them.</p>
+</section>
+
+{% if results %}
+<div class="alert {% if counts.failed %}warning{% else %}success{% endif %}">
+  {% if dry %}Preview (nothing saved):{% else %}Finished:{% endif %}
+  {% for k, v in counts.items %}<b>{{ v }}</b> {{ k }}{% if not forloop.last %}, {% endif %}{% endfor %}
+</div>
+<div class="table-wrap">
+<table class="list-table">
+  <thead><tr><th>File</th><th>DC No</th><th>Result</th><th>Details</th></tr></thead>
+  <tbody>
+  {% for r in results %}
+    <tr><td>{{ r.file }}</td><td>{{ r.dc_no|default:"-" }}</td><td>{{ r.status }}</td><td>{{ r.message }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% if not dry and counts.imported %}<p><a class="btn primary" href="{% url 'dc_list' %}">Open DC Records</a></p>{% endif %}
+{% endif %}
+{% endblock %}

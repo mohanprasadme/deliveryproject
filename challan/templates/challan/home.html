@@ -1,0 +1,132 @@
+{% extends "challan/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="apex-dashboard">
+
+  <div class="dash-welcome">
+    <div class="dash-welcome-copy">
+      <div class="dash-eyebrow"><span class="dash-live-dot"></span> APEX LABORATORIES · OPERATIONS</div>
+      <h1>Welcome back, <span>{{ user.get_username }}</span></h1>
+      <p>Your Delivery Challan Management dashboard. Create challans, review records and manage your data from one place.</p>
+    </div>
+    <a class="dash-primary-action" href="{% url 'dc_new' %}">
+      <span class="dash-action-plus">＋</span>
+      <span><b>New Delivery Challan</b><small>Create and print a challan</small></span>
+      <span class="dash-action-arrow">→</span>
+    </a>
+    <div class="dash-orb dash-orb-one"></div>
+    <div class="dash-orb dash-orb-two"></div>
+  </div>
+
+  <div class="dash-section-heading">
+    <div>
+      <span class="dash-section-kicker">OVERVIEW</span>
+      <h2>Your workspace</h2>
+    </div>
+    <span class="dash-secure-label"><span></span> System ready</span>
+  </div>
+
+  <div class="dash-stats-grid">
+    <article class="dash-stat-card stat-blue">
+      <div class="dash-stat-top">
+        <span class="dash-stat-icon">▤</span>
+        <span class="dash-stat-caption">ALL TIME</span>
+      </div>
+      <div class="dash-stat-number">{{ total }}</div>
+      <div class="dash-stat-label">Total challans saved</div>
+      <div class="dash-stat-decoration"></div>
+    </article>
+
+    <article class="dash-stat-card stat-purple">
+      <div class="dash-stat-top">
+        <span class="dash-stat-icon">▦</span>
+        <span class="dash-stat-caption">THIS MONTH</span>
+      </div>
+      <div class="dash-stat-number">{{ this_month }}</div>
+      <div class="dash-stat-label">Challans created this month</div>
+      <div class="dash-stat-decoration"></div>
+    </article>
+
+    <article class="dash-stat-card stat-green">
+      <div class="dash-stat-top">
+        <span class="dash-stat-icon">✓</span>
+        <span class="dash-stat-caption">LATEST ACTIVITY</span>
+      </div>
+      {% if latest %}
+        <div class="dash-stat-number dash-latest-number">DC {{ latest.dc_no }}</div>
+        <div class="dash-stat-label">Latest saved challan</div>
+      {% else %}
+        <div class="dash-stat-number dash-latest-number">—</div>
+        <div class="dash-stat-label">No challans saved yet</div>
+      {% endif %}
+      <div class="dash-stat-decoration"></div>
+    </article>
+  </div>
+
+  <div class="dash-section-heading dash-actions-heading">
+    <div>
+      <span class="dash-section-kicker">QUICK ACCESS</span>
+      <h2>What would you like to do?</h2>
+    </div>
+  </div>
+
+  <div class="dash-action-grid">
+    <a class="dash-feature-card feature-cyan" href="{% url 'dc_new' %}">
+      <div class="dash-feature-icon">＋</div>
+      <div class="dash-feature-content">
+        <h3>Delivery Challan</h3>
+        <p>Create a new Returnable or Non Returnable challan, add goods and print it.</p>
+        <span class="dash-feature-link">Create challan <b>→</b></span>
+      </div>
+      <span class="dash-feature-watermark">01</span>
+    </a>
+
+    <a class="dash-feature-card feature-violet" href="{% url 'dc_list' %}">
+      <div class="dash-feature-icon">▤</div>
+      <div class="dash-feature-content">
+        <h3>DC Records</h3>
+        <p>Search saved challans, view details, edit records and print copies.</p>
+        <span class="dash-feature-link">View records <b>→</b></span>
+      </div>
+      <span class="dash-feature-watermark">02</span>
+    </a>
+
+    {% if user.is_staff %}
+    <a class="dash-feature-card feature-orange" href="{% url 'import_word' %}">
+      <div class="dash-feature-icon">⇧</div>
+      <div class="dash-feature-content">
+        <h3>Import from Word</h3>
+        <p>Import existing Delivery Challan Word documents into the application.</p>
+        <span class="dash-feature-link">Import documents <b>→</b></span>
+      </div>
+      <span class="dash-feature-watermark">03</span>
+    </a>
+
+    <a class="dash-feature-card feature-green" href="{% url 'backup' %}">
+      <div class="dash-feature-icon">◈</div>
+      <div class="dash-feature-content">
+        <h3>Backup &amp; Restore</h3>
+        <p>Download a database backup or restore your application data.</p>
+        <span class="dash-feature-link">Manage backup <b>→</b></span>
+      </div>
+      <span class="dash-feature-watermark">04</span>
+    </a>
+    {% endif %}
+  </div>
+
+  {% if latest %}
+  <a class="dash-latest-strip" href="{% url 'dc_edit' latest.pk %}">
+    <span class="dash-latest-icon">↗</span>
+    <span class="dash-latest-text"><small>RECENTLY SAVED CHALLAN</small><b>DC {{ latest.dc_no }} · {{ latest.to_name }}</b></span>
+    <span class="dash-latest-open">Open record →</span>
+  </a>
+  {% endif %}
+
+  <footer class="dash-footer">
+    <span><b>APEX</b> DELIVERY CHALLAN MANAGEMENT</span>
+    <span>SMARTER OPERATIONS · BETTER CONTROL</span>
+  </footer>
+
+</section>
+{% endblock %}

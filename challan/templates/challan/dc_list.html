@@ -1,0 +1,69 @@
+{% extends "challan/base.html" %}
+{% block title %}DC Records{% endblock %}
+{% block content %}
+<div class="actionbar">
+  <h2>DC Records</h2>
+  <div class="actions"><a class="btn primary" href="{% url 'dc_new' %}">New Delivery Challan</a></div>
+</div>
+
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search DC no, recipient, item">
+  <select name="type">
+    <option value="">All types</option>
+    <option value="R" {% if dtype == 'R' %}selected{% endif %}>Returnable</option>
+    <option value="N" {% if dtype == 'N' %}selected{% endif %}>Non Returnable</option>
+  </select>
+  <label>From <input type="date" name="from" value="{{ d_from }}"></label>
+  <label>To <input type="date" name="to" value="{{ d_to }}"></label>
+  <label>Year <select name="year"><option value="">All years</option>{% for y in years %}<option value="{{ y|date:'Y' }}" {% if year == y|date:'Y' %}selected{% endif %}>{{ y|date:"Y" }}</option>{% endfor %}</select></label>
+  <button class="btn" type="submit">Search</button>
+  <a class="btn ghost" href="{% url 'dc_list' %}">Reset</a>
+</form>
+
+{% if user.is_staff and years %}
+<section class="card" style="border-color:#e5b4af;">
+  <h3>Bulk delete by year</h3>
+  <p class="muted small">Permanently deletes every Delivery Challan dated in the selected year, including all related goods rows. This action cannot be undone. Create a database backup first.</p>
+  <form method="post" action="{% url 'dc_bulk_delete_year' %}" class="filters" onsubmit="return confirm('WARNING: Permanently delete ALL Delivery Challans and their item rows for the selected year? This cannot be undone.');">
+    {% csrf_token %}
+    <label>Delete all records for year <select name="year" required><option value="">Select year</option>{% for y in years %}<option value="{{ y|date:'Y' }}">{{ y|date:"Y" }}</option>{% endfor %}</select></label>
+    <button class="btn danger" type="submit">Delete Entire Year</button>
+  </form>
+</section>
+{% endif %}
+
+{% if page.object_list %}
+<div class="table-wrap">
+<table class="list-table">
+  <thead><tr><th>DC No</th><th>Date</th><th>Year</th><th>Type</th><th>To</th><th>Items</th><th>Created by</th><th class="c-actions">Actions</th></tr></thead>
+  <tbody>
+  {% for dc in page %}
+    <tr>
+      <td><a href="{% url 'dc_edit' dc.pk %}"><b>{{ dc.dc_no }}</b></a></td>
+      <td>{{ dc.dc_date|date:"d.m.Y" }}</td>
+      <td>{{ dc.dc_date|date:"Y" }}</td>
+      <td>{{ dc.get_challan_type_display }}</td>
+      <td>{{ dc.to_name }}{% if dc.to_company %}<br><span class="muted">{{ dc.to_company }}</span>{% endif %}</td>
+      <td>{{ dc.item_count }}</td>
+      <td>{{ dc.created_by.get_username|default:"-" }}</td>
+      <td class="c-actions">
+        <a class="btn small" href="{% url 'dc_edit' dc.pk %}">Open</a>
+        <a class="btn small" href="{% url 'dc_print' dc.pk %}?auto=1" target="_blank">Print</a>
+        <form method="post" action="{% url 'dc_delete' dc.pk %}" class="inline"
+              onsubmit="return confirm('Delete DC {{ dc.dc_no }} permanently?');">{% csrf_token %}
+          <button class="btn small danger" type="submit">Delete</button></form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<div class="pager">
+  {% if page.has_previous %}<a class="btn small" href="?{{ qs_str }}&page={{ page.previous_page_number }}">Previous</a>{% endif %}
+  <span>Page {{ page.number }} of {{ page.paginator.num_pages }} ({{ page.paginator.count }} challans)</span>
+  {% if page.has_next %}<a class="btn small" href="?{{ qs_str }}&page={{ page.next_page_number }}">Next</a>{% endif %}
+</div>
+{% else %}
+<div class="empty">No delivery challans found. <a href="{% url 'dc_new' %}">Create the first one.</a></div>
+{% endif %}
+{% endblock %}
